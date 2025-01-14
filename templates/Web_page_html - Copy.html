@@ -1,0 +1,944 @@
+
+<script>
+    // Dynamically set the server URL
+    const page_server_url = `http://{{ host_ip }}:5000/update`;
+    // const page_server_url = `http://localhost:5000/update`;
+    console.log("Server URL:", page_server_url);
+
+    // Example fetch request
+    fetch(page_server_url)
+        .then(response => response.json())
+        .then(data => console.log("Data:", data))
+        .catch(error => console.error("Error:", error));
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Output</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Control Panel</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-family: Arial, sans-serif;
+        }
+        label {
+            font-size: 16px; /* Font size for the label */
+            color: #333; /* Dark gray text */
+            display: flex; /* Flexbox layout for better alignment */
+            align-items: center; /* Vertically center the radio button and text */
+            margin-bottom: 10px; /* Space between labels */
+            cursor: pointer; /* Change the cursor to pointer on hover */
+            transition: color 0.3s ease; /* Smooth color transition */
+        }
+        /* Style for the radio input itself */
+        input[type="radio"] {
+            appearance: none; /* Remove default appearance */
+            width: 18px; /* Set width of the radio button */
+            height: 18px; /* Set height of the radio button */
+            border-radius: 50%; /* Make it a circle */
+            border: 2px solid #4CAF50; /* Green border */
+            margin-right: 10px; /* Space between the radio button and the label text */
+            cursor: pointer; /* Change the cursor to pointer */
+            transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition for color changes */
+        }
+
+                /* Style for the radio button when checked */
+        input[type="radio"]:checked {
+            background-color: #4CAF50; /* Green background when selected */
+            border-color: #4CAF50; /* Green border when selected */
+        }
+
+        /* Hover effect for radio button */
+        input[type="radio"]:hover {
+            border-color: #45a049; /* Slightly darker green on hover */
+        }
+
+        /* Label hover effect */
+        #leftPanel label:hover {
+            color: #4CAF50; /* Change label text color to green on hover */
+        }
+        /* Initially hide the text area */
+
+        #Train_RL-textarea-container {
+            display: none; /* Ensure the container does not occupy space when hidden */
+        }
+        #Test_RL-textarea-container {
+            display: none; /* Ensure the container does not occupy space when hidden */
+        }
+        #train_new_model_from_simulation-textarea-container {
+            display: none; /* Ensure the container does not occupy space when hidden */
+        }
+        #test_model_on_simulation-textarea-container {
+            display: none; /* Ensure the container does not occupy space when hidden */
+        }
+        #Use_pre_trained_agent_for_hardware-textarea-container {
+            display: none; /* Ensure the container does not occupy space when hidden */
+        }
+        #Use_pre_trained_agent_for_simulation-textarea-container {
+            display: none; /* Ensure the container does not occupy space when hidden */
+        }
+
+
+
+        
+        /* Style for the number input */
+        input[type="number"] {
+            width: 150px; /* Set the width of the input */
+            padding: 1px; /* Padding inside the input */
+            border: 1px solid #535353; /* Green border */
+            border-radius: 5px; /* Rounded corners */
+            font-size: 14px; /* Font size */
+            color: #333; /* Dark gray text */
+            background-color: #fff; /* White background */
+            outline: none; /* Remove the default outline on focus */
+            transition: border-color 0.3s ease, background-color 0.3s ease; /* Smooth transition */
+        }
+
+        /* Focus state styling */
+        input[type="number"]:focus {
+            border-color: #000000; /* Darker green border on focus */
+            background-color: #f0f8f0; /* Light green background on focus */
+        }
+
+        /* Style for the input arrows (up and down buttons) */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none; /* Remove the default spin buttons */
+            margin: 0; /* Remove any margin */
+        }
+
+
+
+
+        /* #leftPanel {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            margin-left: 40px;
+        } */
+
+        #leftPanel {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        margin-left: 10px; /* Left margin */
+        background-color: #cdeaaa88; /* Light gray background */
+        border-radius: 0px; /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        /* Additional styling for text elements inside the left panel */
+
+        #leftPanel h1 {
+            color: #fff; /* White text */
+            background-color: #0d772d9d; /* Green background */
+            padding: 15px 20px; /* Padding inside the box */
+            border-radius: 8px; /* Rounded corners */
+            margin-bottom: 15px; /* Space below heading */
+            font-size: 24px; /* Adjust size if needed */
+            text-align: center; /* Center the text */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        }
+
+        #leftPanel h2 {
+            color: #fff; /* White text */
+            background-color: #187e368f; /* Green background */
+            padding: 15px 20px; /* Padding inside the box */
+            border-radius: 8px; /* Rounded corners */
+            margin-bottom: 15px; /* Space below heading */
+            font-size: 24px; /* Adjust size if needed */
+            text-align: center; /* Center the text */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        }
+
+        /* Styling for paragraphs and other text */
+        #leftPanel p {
+            color: #555; /* Slightly lighter gray */
+            line-height: 1.6;
+            margin-bottom: 15px; /* Space below paragraphs */
+        }
+        #stopPython {
+            float: right; /* Aligns the button to the right */
+            background-color: rgba(225, 0, 0, 0.705); /* Green background */
+            color: white; /* White text */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+                /* Button hover effect */
+        #stopPython:hover {
+            background-color: #f10707; /* Darker green on hover */
+        }
+        #startPython {
+            float: left; /* Aligns the button to the right */
+            background-color: rgba(0, 128, 0, 0.692); /* Green background */
+            color: white; /* White text */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #startPython:hover {
+            background-color: #026311; /* Darker green on hover */
+        }
+
+        /* Bottom Window: Instructions & Developer Info */
+        footer {
+            background-color: #dfe0d4;
+            padding: 1px;
+            text-align: center;
+            color: #555;
+            border-top: 5px solid #388E3C;
+        }
+        footer p {
+            font-size: 1em;
+            margin: 5px 0;
+        }
+        footer .developer-info {
+            font-style: italic;
+        }
+
+        #update_on_server {
+            display: block; /* Make it a block-level element */
+            margin: 0 auto; /* Center the button horizontally */
+            background-color: rgba(12, 96, 134, 0.692); /* Background color */
+            color: white; /* White text */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #update_on_server:hover {
+            background-color: #0261f0; /* Darker green on hover */
+        }
+
+        
+
+
+        #settingsBox {
+            flex: 2;
+            padding: 30px;
+            border: 1px solid #ccc;
+            overflow-y: auto;
+            margin-right: 10px; 
+            background-color: #d4d5d5; 
+            border-radius: 0px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #settingsBox button {
+            background-color: #7590c2; /* Green background */
+            color: white; /* White text */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #settingsBox h1 {
+            color: #fff; /* White text */
+            background-color: #696c69; /* Green background */
+            margin-top: 5px; /* Top margin */
+            padding: 15px 20px; /* Padding inside the box */
+            border-radius: 8px; /* Rounded corners */
+            margin-bottom: 15px; /* Space below heading */
+            font-size: 24px; /* Adjust size if needed */
+            text-align: center; /* Center the text */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        }
+
+        #settingsBox p {
+            color: #555; /* Slightly lighter gray */
+            line-height: 1.6;
+            margin-bottom: 15px; /* Space below paragraphs */
+        }
+        .settings-container {
+            display: none;
+        }
+        #settingsBox label:hover {
+            color: #09090a; /* Change label text color to green on hover */
+        }
+        #logWindow {
+            width: 95%;
+            height: 100px;
+            border: 1px solid #e4e4e4;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #e4e4e4;
+            font-family: monospace;
+            margin-bottom: 10px;
+        }
+        #log-container {
+            width: 95%;
+            height: 150px;
+            border: 1px solid #e4e4e4;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #e4e4e4;
+            font-family: monospace;
+            margin-bottom: 10px;
+        }
+        #currentSettingsWindow {
+            width: 95%;
+            height: 190px;
+            border: 1px solid #e4e4e4;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #e4e4e4;
+            font-family: monospace;
+            margin-bottom: 10px;
+        }
+        /* Table-specific styles */
+        #currentSettingsTable {
+            font-size: 12px; /* Adjust text size */
+            line-height: 1; /* Adjust line spacing */
+            width: 100%; /* Ensure table spans the container */
+            border-collapse: collapse; /* Ensures that the space between columns is applied */
+            border-spacing: 20px 0; /* Adds space between columns (horizontal) and keeps rows tight (vertical) */
+        }
+        #currentSettingsTable th{
+            padding: 5px; /* Reduce cell padding */
+            text-align: left; /* Text alignment */
+            border: 1px solid #100b0b; /* Border for columns and rows */
+            background-color: #a3a2a2; /* Light grey color for header row */
+            font-weight: bold;
+
+        }
+        #currentSettingsTable tbody tr {
+            margin: 0; /* No additional margin between rows */
+            border-bottom: 1px solid #ccc; /* Optional row separation */
+            background-color: #ffffff; /* Optional background color for rows */
+        }
+        #currentSettingsTable td {
+            padding: 3px; /* Reduce cell padding */
+            text-align: left; /* Text alignment */
+            border: 1px solid #100b0b; /* Border for columns and rows */
+            color: #333; /* Dark text color for table cells */
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Flask Server</title>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Viewer</title>
+    <style>
+        #logs {
+            height: 400px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-family: monospace;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="leftPanel">
+        <h1>Control Panel</h1>
+        <div> 
+            <!-- <button onclick="runPythonScript()">Run Python Script</button> -->
+            <button id="startPython">Start Process</button>
+            <!-- <button id="restartButton">Restart Process</button> -->
+            <button id="stopPython">Stop Process</button>
+            <!-- <button id="restartserver">Restart Server</button> -->
+        </div><br><br>
+        <form id="controlForm">
+
+
+            <div><h2>Action Selection</h2></div>
+
+            <label>
+                <input type="radio" id="Train_RL" name="action" value="Train_RL">
+                Train RL
+            </label>
+
+            <div id="Train_RL-textarea-container" style="display: none;">
+                <textarea id="agent_name_to_save_from_hardware" name="name" rows="1" cols="40" placeholder="agent_name_to_save_from_hardware"></textarea>
+            </div>
+
+            <label>
+                <input type="radio" id="Test_RL" name="action" value="Test_RL">
+                Test RL
+            </label>
+
+            <div id="Test_RL-textarea-container" style="display: none;">
+                <textarea id="agent_name_to_load_for_hardware" name="name" rows="1" cols="40" placeholder="agent_name_to_load_for_hardware"></textarea>
+            </div>
+
+            <label>
+                <input type="radio" id="PID" name="action" value="PID">
+                PID
+            </label>
+            
+            <label>
+                <input type="radio" id="train_new_model_from_simulation" name="action" value="train_new_model_from_simulation">
+                Train new model from simulation
+            </label>
+
+            <div id="train_new_model_from_simulation-textarea-container" style="display: none;">
+                <textarea id="agent_name_to_save_from_simulation" name="name" rows="1" cols="40" placeholder="agent_name_to_save_from_simulation"></textarea>
+            </div>
+            
+            <label>
+                <input type="radio" id="testing_trained_model_on_simulation" name="action" value="testing_trained_model_on_simulation">
+                Testing trained model on simulation
+            </label>
+            <div id="testing_trained_model_on_simulation-textarea-container" style="display: none;">
+                <textarea id="agent_name_to_load_for_simulation" name="name" rows="1" cols="40" placeholder="agent_name_to_load_for_simulation"></textarea>
+            </div>
+
+            <label>
+                <input type="radio" id="stop" name="action" value="stop">
+                Stop  <span style="font-size: 11px; color: slategrey;"> -- (Select if no more action)</span>
+
+            </label>
+            <br>
+            <button type="button" id="update_on_server">Update On Server</button>
+            <br>
+
+        </form>
+
+        <footer>
+            <p class="developer-info">Developed by: Muhammad Ali</p>
+        </footer>
+        <!-- <h2>Python Console Output</h2>
+        <div id="log-container"></div>  -->
+
+    </div>
+
+    <div id="settingsBox">
+        <h1>Settings</h1>
+        <label>
+            Set Episode Length: 
+            <input type="number" id="Episode_Length" name="Episode_Length" step="1" placeholder="Enter Episode Length">
+        </label>
+        <label>
+            Set num_steps: 
+            <input type="number" id="num_steps" name="num_steps" step="1" placeholder="Enter num_steps">
+        </label>
+        <label>
+            Setpoint: 
+            <input type="number" id="Setpoint" name="Setpoint" step="0.01" placeholder=" Range (-1, 1)" min="-1" max="1" required>
+            <br>
+            <span id="display-value">Current Value: </span>
+            <span style="font-size: 12px;">.  If setpoint is not specified, random setpoint for each Episode will be used.</span>
+        </label>
+
+        <span id="error-message" style="color: red; font-size: 16px; display: none;">Please enter a value between -1 and 1.</span>
+
+
+        <label>
+            Tolerance: 
+            <input type="number" id="tolerance" name="tolerance" step="0.01" placeholder=" Range (0, 0.3)" min="0" max="0.3" required>
+        </label>
+        <span id="error-message2" style="color: red; font-size: 16px; display: none;">Please enter a value between 0 and 0.3.</span>
+
+        <div id="trainSettings" class="settings-container">
+            <h2>Advance Settings</h2>
+            <label>
+                Use Reward Function (Advanced):
+                <input type="checkbox" id="Use_Reward_function_advance" name="Use_Reward_function_advance">
+            </label>
+            <label>
+                Use pre trained agent:
+                <input type="checkbox" id="Use_pre_trained_agent" name="Use_pre_trained_agent">
+            </label>
+            <div id="Use_pre_trained_agent_for_hardware-textarea-container">
+                <textarea id="pre_trained_agent_name_for_hardware" name="name" rows="1" cols="40" placeholder="pre_trained_agent_name_for_hardware"></textarea>
+            </div>
+            
+        </div>
+        <div id="testSettings" class="settings-container">
+            <h2>Advance Settings</h2>
+        </div>
+
+        <div id="train_new_model_from_simulation_settings" class="settings-container">
+            <h2>Advance Settings</h2>
+            <label>
+                Render:
+                <input type="checkbox" id="render" name="render">
+            </label>
+            <label>
+                Use pre trained agent:
+                <input type="checkbox" id="Use_pre_trained_agent" name="Use_pre_trained_agent">
+            </label>
+
+            <div id="Use_pre_trained_agent_for_simulation-textarea-container">
+                <textarea id="pre_trained_agent_name_for_simulation" name="name" rows="1" cols="40" placeholder="pre_trained_agent_name_simulation"></textarea>
+            </div>
+
+            <label>
+                Use Reward function advance:
+                <input type="checkbox" id="Use_Reward_function_advance" name="Use_Reward_function_advance">
+            </label>
+        </div>
+
+        <div id="pidSettings" class="settings-container">
+            <h2>PID Settings</h2>
+            <label>
+                Set Kp:
+                <input type="number" id="Set_Kp" name="Set_Kp" step="0.01" placeholder="Enter Kp value">
+            </label>
+            <label>
+                Set Ki:
+                <input type="number" id="Set_Ki" name="Set_Ki" step="0.01" placeholder="Enter Ki value">
+            </label>
+            <label>
+                Set Kd:
+                <input type="number" id="Set_Kd" name="Set_Kd" step="0.01" placeholder="Enter Kd value">
+            </label>
+            <label>
+                Run PID on Hardware:
+                <input type="checkbox" id="run_pid_on_hardware" name="run_pid_on_hardware">
+            </label>
+        </div>
+
+        <h2>Current Settings</h2>
+        <div id="currentSettingsWindow">
+            <table id="currentSettingsTable" class="display">
+                <thead>
+                    <tr>
+                        <th>Setting</th>
+                        <th>Value</th>
+                        <th>Setting</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <h2>Logs</h2>
+        <div id="logWindow">Logs will appear here... <br></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const Train_RL = document.getElementById('Train_RL');
+            const Test_RL = document.getElementById('Test_RL');
+            const train_new_model_from_simulation = document.getElementById('train_new_model_from_simulation');
+            const testing_trained_model_on_simulation = document.getElementById('testing_trained_model_on_simulation');
+            const Train_RL_textareaContainer = document.getElementById('Train_RL-textarea-container');
+            const Test_RL_textareaContainer = document.getElementById('Test_RL-textarea-container');
+            const train_new_model_from_simulation_textareaContainer = document.getElementById('train_new_model_from_simulation-textarea-container');
+            const testing_trained_model_on_simulation_textareaContainer = document.getElementById('testing_trained_model_on_simulation-textarea-container');
+            const allRadios = document.getElementsByName('action');
+
+            const toggleTextarea = () => {
+                if (Train_RL.checked) {
+                    Train_RL_textareaContainer.style.display = 'block'; // Show textarea only for Train RL
+                } else {
+                    Train_RL_textareaContainer.style.display = 'none'; // Hide textarea for other options
+                }
+
+                if (Test_RL.checked) {
+                    Test_RL_textareaContainer.style.display = 'block'; // Show textarea only for Train RL
+                } else {
+                    Test_RL_textareaContainer.style.display = 'none'; // Hide textarea for other options
+                }
+
+                if (train_new_model_from_simulation.checked) {
+                    train_new_model_from_simulation_textareaContainer.style.display = 'block'; // Show textarea only for Train RL
+                } else {
+                    train_new_model_from_simulation_textareaContainer.style.display = 'none'; // Hide textarea for other options
+                }
+
+                if (testing_trained_model_on_simulation.checked) {
+                    testing_trained_model_on_simulation_textareaContainer.style.display = 'block'; // Show textarea only for Train RL
+                } else {
+                    testing_trained_model_on_simulation_textareaContainer.style.display = 'none'; // Hide textarea for other options
+                }
+            };
+
+            // Add event listener to all radio buttons
+            allRadios.forEach(radio => {
+                radio.addEventListener('change', toggleTextarea);
+            });
+
+            // Initialize state on page load
+            toggleTextarea();
+        });
+
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get the containers
+            const textareaContainerSimulation = document.getElementById('Use_pre_trained_agent_for_simulation-textarea-container');
+            const textareaContainerHardware = document.getElementById('Use_pre_trained_agent_for_hardware-textarea-container');
+
+            // Toggle the visibility of the containers based on checkbox status
+            const toggleTextareaVisibility = () => {
+                const isChecked = document.querySelector('input[name="Use_pre_trained_agent"]:checked') !== null;
+
+                if (isChecked) {
+                    textareaContainerSimulation.style.display = 'block';
+                    textareaContainerHardware.style.display = 'block';
+                } else {
+                    textareaContainerSimulation.style.display = 'none';
+                    textareaContainerHardware.style.display = 'none';
+                }
+            };
+
+            // Add event listeners for the checkboxes
+            const checkboxes = document.querySelectorAll('input[name="Use_pre_trained_agent"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', toggleTextareaVisibility);
+            });
+
+            // Initialize the state on page load
+            toggleTextareaVisibility();
+        });
+    </script>
+
+    <script>
+        // const logContainer = document.getElementById('log-container');
+        // const eventSource = new EventSource('/logs');
+
+        // function updateLogs(log) {
+        //     logContainer.innerHTML += log;
+        //     window.scrollTo(0, document.body.scrollHeight);
+        // }
+
+        // eventSource.onmessage = function(event) {
+        //     updateLogs(event.data);
+        // };
+
+        
+        document.getElementById('startPython').onclick = function() {
+            updateSettings()
+            fetch('/start-python', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(error => alert('Error starting the script'));
+        };
+
+
+        document.getElementById('stopPython').onclick = function() {
+            fetch('/stop-python', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(error => alert('Error stopping the script'));
+        };
+
+        // Default values for the settings
+        const defaultValues = {
+            Episode_Length: 100,
+            Use_Reward_function_advance: false,
+            run_pid_on_hardware: false,
+            Use_pre_trained_agent:false,
+            testing_trained_model_on_simulation: false,
+            train_new_model_from_simulation: false,
+            num_steps: 1000,
+            Setpoint: null,
+            tolerance: 0.01,
+            Set_Kp: 15.0,
+            Set_Ki: 0.0,
+            Set_Kd: 0.01,
+            Train_RL: false,
+            agent_name_to_save_from_hardware: 'hardware_agent',
+            agent_name_to_load_for_hardware: 'hardware_agent',
+            pre_trained_agent_name_for_hardware: 'hardware_agent',
+            pre_trained_agent_name_for_simulation: 'simulation_agent',
+            agent_name_to_save_from_simulation: 'simulation_agent',
+            agent_name_to_load_for_simulation: 'simulation_agent',
+            Test_RL: false,
+            render: false,
+            PID: false,
+            stop: false,
+        };
+
+        // Variables to hold current values
+        let currentSettings = { ...defaultValues };
+
+        // Initialize input fields with default values
+        function initializeDefaults() {
+
+            document.getElementById('Set_Kp').value = defaultValues.Set_Kp;
+            document.getElementById('Set_Ki').value = defaultValues.Set_Ki;
+            document.getElementById('Set_Kd').value = defaultValues.Set_Kd;
+            document.getElementById('Setpoint').value = defaultValues.Setpoint;
+            document.getElementById('tolerance').value = defaultValues.tolerance;
+            document.getElementById('num_steps').value = defaultValues.num_steps;
+            document.getElementById('Episode_Length').value = defaultValues.Episode_Length;   
+            document.getElementById('render').checked = defaultValues.render;         
+            document.getElementById('PID').checked = defaultValues.PID;
+            document.getElementById('stop').checked = defaultValues.stop;
+            document.getElementById('Train_RL').checked = defaultValues.Train_RL;
+            document.getElementById('run_pid_on_hardware').checked = defaultValues.run_pid_on_hardware;
+            document.getElementById('agent_name_to_save_from_hardware').value = defaultValues.agent_name_to_save_from_hardware;
+            document.getElementById('pre_trained_agent_name_for_hardware').value = defaultValues.pre_trained_agent_name_for_hardware;
+            document.getElementById('pre_trained_agent_name_for_simulation').value = defaultValues.pre_trained_agent_name_for_simulation;
+            document.getElementById('agent_name_to_load_for_hardware').value = defaultValues.agent_name_to_load_for_hardware;
+            document.getElementById('agent_name_to_save_from_simulation').value = defaultValues.agent_name_to_save_from_simulation;
+            document.getElementById('agent_name_to_load_for_simulation').value = defaultValues.agent_name_to_load_for_simulation;
+            document.getElementById('Test_RL').checked = defaultValues.Test_RL;
+            document.getElementById('Use_pre_trained_agent').checked = defaultValues.Use_pre_trained_agent;
+            document.getElementById('Use_Reward_function_advance').checked = defaultValues.Use_Reward_function_advance;
+            document.getElementById('train_new_model_from_simulation').checked = defaultValues.train_new_model_from_simulation;
+            document.getElementById('testing_trained_model_on_simulation').checked = defaultValues.testing_trained_model_on_simulation;
+        }
+
+        // Function to synchronize Use_Reward_function_advance checkboxes
+        function synchronizeRewardFunctionAdvance() {
+            const checkboxes = document.querySelectorAll('input[name="Use_Reward_function_advance"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    checkboxes.forEach(cb => {
+                        cb.checked = checkbox.checked;
+                    });
+                });
+            });
+        }
+
+        // Function to synchronize Use_pre_trained_agent checkboxes
+        function synchronize_Use_pre_trained_agent() {
+            const checkboxes = document.querySelectorAll('input[name="Use_pre_trained_agent"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    checkboxes.forEach(cb => {
+                        cb.checked = checkbox.checked;
+                    });
+                });
+            });
+        }
+
+        //To make sure setpoint is within specified limit
+        const setpointInput = document.getElementById('Setpoint');
+        const errorMessage = document.getElementById('error-message');
+        setpointInput.addEventListener('input', function() {
+            let value = parseFloat(setpointInput.value);
+            if (value < -1 || value > 1) {
+                errorMessage.style.display = 'inline';
+                setpointInput.setCustomValidity('Please enter a value between -1 and 1');
+            } else {
+                errorMessage.style.display = 'none';
+                setpointInput.setCustomValidity('');
+            }
+        });
+
+        // Restrict manual input beyond range
+        setpointInput.addEventListener('input', function () {
+            let value = parseFloat(setpointInput.value);
+            if (value < -1) {
+                setpointInput.value = -1;
+            } else if (value > 1) {
+                setpointInput.value = 1;
+            }
+
+            // const displayValue = document.getElementById('display-value');
+            // if (isNaN(value)) {
+            //     displayValue.textContent = `Parsed Value: NaN`;
+            // } else {
+            //     displayValue.textContent = `Parsed Value: ${value}`;
+            // }
+        });
+        
+        //To make sure tolerance is within specified limit
+        const toleranceInput = document.getElementById('tolerance');
+        const errorMessage2 = document.getElementById('error-message2');
+        toleranceInput.addEventListener('input', function() {
+            let value = parseFloat(toleranceInput.value);
+
+            if (value < 0 || value > 0.3) {
+                errorMessage2.style.display = 'inline';
+                toleranceInput.setCustomValidity('Please enter a value between 0 and 0.3');
+            } else {
+                errorMessage2.style.display = 'none';
+                toleranceInput.setCustomValidity('');
+            }
+        });
+        // Restrict manual input beyond range
+        toleranceInput.addEventListener('input', function () {
+            let value = parseFloat(toleranceInput.value);
+            if (value < -1) {
+                toleranceInput.value = 0;
+            } else if (value > 1) {
+                toleranceInput.value = 0.3;
+            }
+        });
+
+        // Function to initialize or refresh the DataTable
+        function updateTable() {
+            // Split settings into two groups for 4 columns
+            const keys = Object.keys(currentSettings);
+            const values = Object.values(currentSettings);
+            const halfLength = Math.ceil(keys.length / 2);
+
+            const firstHalfKeys = keys.slice(0, halfLength);
+            const firstHalfValues = values.slice(0, halfLength);
+
+            const secondHalfKeys = keys.slice(halfLength);
+            const secondHalfValues = values.slice(halfLength);
+
+            // Clear the table body before updating
+            const tableBody = document.querySelector('#currentSettingsTable tbody');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            // Add rows to the table
+            for (let i = 0; i < halfLength; i++) {
+                const row = document.createElement('tr');
+
+                // First column: Setting 1, Value 1
+                const cell1 = document.createElement('td');
+                cell1.textContent = firstHalfKeys[i] || ''; // Display key
+                row.appendChild(cell1);
+
+                const cell2 = document.createElement('td');
+                cell2.textContent = firstHalfValues[i] !== undefined ? firstHalfValues[i] : ''; // Display value
+                row.appendChild(cell2);
+
+                // Second column: Setting 2, Value 2
+                const cell3 = document.createElement('td');
+                cell3.textContent = secondHalfKeys[i] || ''; // Display key
+                row.appendChild(cell3);
+
+                const cell4 = document.createElement('td');
+                cell4.textContent = secondHalfValues[i] !== undefined ? secondHalfValues[i] : ''; // Display value
+                row.appendChild(cell4);
+
+                tableBody.appendChild(row); // Append the row to the table
+            }
+        }
+
+        // Function to update current settings and send data to the server
+        function updateSettings() {
+            currentSettings = {
+                Setpoint: parseFloat(document.getElementById('Setpoint').value) || defaultValues.Setpoint,
+                tolerance: parseFloat(document.getElementById('tolerance').value) || defaultValues.tolerance,
+                Episode_Length: parseInt(document.getElementById('Episode_Length').value) || defaultValues.Episode_Length,
+                num_steps: parseFloat(document.getElementById('num_steps').value) || defaultValues.num_steps,
+                Set_Kp: parseFloat(document.getElementById('Set_Kp').value) || defaultValues.Set_Kp,
+                Set_Ki: parseFloat(document.getElementById('Set_Ki').value) || defaultValues.Set_Ki,
+                Set_Kd: parseFloat(document.getElementById('Set_Kd').value) || defaultValues.Set_Kd,
+                PID: document.getElementById('PID').checked,
+                Train_RL: document.getElementById('Train_RL').checked,
+                run_pid_on_hardware: document.getElementById('run_pid_on_hardware').checked,
+                Test_RL: document.getElementById('Test_RL').checked,
+                render: document.getElementById('render').checked,
+                Use_pre_trained_agent: document.getElementById('Use_pre_trained_agent').checked,
+                Use_Reward_function_advance: document.getElementById('Use_Reward_function_advance').checked,
+                testing_trained_model_on_simulation: document.getElementById('testing_trained_model_on_simulation').checked,
+                train_new_model_from_simulation: document.getElementById('train_new_model_from_simulation').checked,
+                agent_name_to_save_from_hardware: document.getElementById('agent_name_to_save_from_hardware').value,
+                pre_trained_agent_name_for_hardware: document.getElementById('pre_trained_agent_name_for_hardware').value,
+                pre_trained_agent_name_for_simulation: document.getElementById('pre_trained_agent_name_for_simulation').value,
+                agent_name_to_load_for_hardware: document.getElementById('agent_name_to_load_for_hardware').value,
+                agent_name_to_save_from_simulation: document.getElementById('agent_name_to_save_from_simulation').value,
+                agent_name_to_load_for_simulation: document.getElementById('agent_name_to_load_for_simulation').value,
+                stop: document.getElementById('stop').checked,
+            };
+
+            console.log(currentSettings);
+
+
+
+            // Send updated settings to the server
+            sendSettingsToServer(currentSettings);
+        }
+
+        // Function to send settings to the server (use your API endpoint here)
+        async function sendSettingsToServer(settings) {
+            value = settings.Setpoint
+            const displayValue = document.getElementById('display-value');
+            if (isNaN(value)) {
+                displayValue.textContent = `Parsed Value: NaN`;
+            } else {
+                displayValue.textContent = `Parsed Value: ${value}`;
+            }
+            
+            try {
+                const response = await fetch(page_server_url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(settings),
+                });
+
+                if (response.ok) {
+                    logServerMessage('Settings updated successfully on the server!\n');
+                    updateTable();
+                    // const displayValue = document.getElementById('display-value');
+                    // displayValue.textContent = `Current Value: ${isNaN(Setpoint.value) ? 'NaN' : Setpoint.value}`;
+
+                } else {
+                    logServerMessage('Can not update setting while other process is running!\nOr server is not responding.');
+                    alert('Can not update setting while other process is running!\nOr server is not responding.' )
+                }
+            } catch (error) {
+                logServerMessage(`Error: ${error.message}\n`);
+            }
+        }
+
+        // Function to log server messages (one message per line, no duplicates)
+        function logServerMessage(message) {
+            const logWindow = document.getElementById('logWindow');
+            logWindow.innerHTML += message + '<br>'; // Append the message with a line break
+            logWindow.scrollTop = logWindow.scrollHeight; // Auto-scroll to the latest log entry
+        }
+
+        // Display appropriate settings based on the selected action
+        function toggleSettingsDisplay() {
+            const action = document.querySelector('input[name="action"]:checked')?.value;
+            document.querySelectorAll('.settings-container').forEach(container => {
+                container.style.display = 'none';
+            });
+
+            if (action === 'Train_RL') {
+                document.getElementById('trainSettings').style.display = 'block';
+            } else if (action === 'Test_RL') {
+                document.getElementById('testSettings').style.display = 'block';
+            } else if (action === 'train_new_model_from_simulation') {
+                document.getElementById('train_new_model_from_simulation_settings').style.display = 'block';
+            } else if (action === 'PID') {
+                document.getElementById('pidSettings').style.display = 'block';
+            }
+        }
+
+        // Add event listeners
+        document.querySelectorAll('input[name="action"]').forEach(input => {
+            input.addEventListener('change', toggleSettingsDisplay);
+        });
+
+        document.getElementById('update_on_server').addEventListener('click', () => {
+            logServerMessage('Sending...');
+            updateSettings();
+        });
+        // Update settings on page load
+        window.addEventListener('load', () => {
+            logServerMessage('Page loaded. Updating server...');
+            updateSettings();
+        });
+        // Initialize the page with default settings
+        initializeDefaults();
+        synchronizeRewardFunctionAdvance();
+        synchronize_Use_pre_trained_agent();
+</script>
+<!-- Bottom Window: Instructions & Developer Info -->
+
+</body>
+</html>

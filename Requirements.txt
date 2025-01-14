@@ -1,0 +1,6 @@
+pip install tensorflow==2.18.0
+pip install numpy==1.26.4
+pip install shimny
+pip install stable_baselines3
+pip install requests
+pip install matplotlib
